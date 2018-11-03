@@ -23,7 +23,7 @@ handler.on('error', function (err) {
   console.error('Error:', err.message)
 })
 
-handler.on('issue_comment', function (event) {
+handler.on('issue_comment', async function (event) {
 
   // Extract a few useful things from the payload
   const { payload } = event;
