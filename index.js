@@ -20,6 +20,11 @@ http.createServer(function (req, res) {
 }).listen(7777)
 console.log("Corriendo en puerto 7777");
 
+handler.on('ping', function (event) {
+  console.log(event);
+  // fetch(new Request(url, headers()));
+})
+
 handler.on('error', function (err) {
   console.error('Error:', err.message)
 })
@@ -80,5 +85,14 @@ function respond(payload, statusCode = 200) {
   return {
     statusCode,
     body: JSON.stringify({ payload })
+  };
+}
+
+function headers() {
+  return {
+    method: 'POST',
+    headers: new Headers(),
+    mode: 'cors',
+    cache: 'default'
   };
 }
