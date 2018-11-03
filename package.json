@@ -9,5 +9,8 @@
   "dependencies": {
     "@octokit/rest": "^15.15.1",
     "dotenv": "^6.1.0"
+  },
+  "scripts": {
+    "start": "node index.js"
   }
 }
