@@ -1,4 +1,4 @@
-import { createHandler } from './src/handler';
+const createHandler = require('./src/handler');
 
 const http = require('http');
 const port = process.env.PORT || 3000;

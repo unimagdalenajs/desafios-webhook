@@ -1,4 +1,4 @@
-import { makeBody, respond } from './utils';
+const { makeBody, respond } = require('./utils');
 const createHandler = require('github-webhook-handler');
 const fetch = require("node-fetch");
 const octokit = require("@octokit/rest")();
@@ -9,7 +9,7 @@ octokit.authenticate({
   token: process.env.GITHUB_TOKEN,
 });
 
-export default (req, res, errorCallback) => {
+module.exports = function (req, res, errorCallback) {
   const handler = createHandler({ path: '/', secret: 'myhashsecret' });
 
   handler.on('error', function (err) {

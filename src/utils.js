@@ -3,18 +3,18 @@
  * @param {any} payload 
  * @param {number?} statusCode 
  */
-export function respond(payload, statusCode = 200) {
+exports.respond = function (payload, statusCode = 200) {
   return {
     statusCode,
     body: JSON.stringify({ payload })
   };
-}
+};
 
 /**
  * Make body
  * @param {any} body
  */
-export function makeBody(body) {
+exports.makeBody = function (body) {
   const parsed = {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -25,4 +25,4 @@ export function makeBody(body) {
     parsed.body = JSON.stringify(body);
   }
   return parsed;
-}
+};

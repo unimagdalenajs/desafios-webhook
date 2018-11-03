@@ -12,6 +12,6 @@
     "node-fetch": "^2.2.0"
   },
   "scripts": {
-    "start": "node --experimental-modules index.js"
+    "start": "node index.js"
   }
 }
