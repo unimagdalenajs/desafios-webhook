@@ -27,7 +27,7 @@ handler.on('ping', async function (event) {
   const { ping_url } = event.payload.hook;
   console.log(event);
   await fetch(ping_url, parseBody());
-  return response('Ping exitoso');
+  return respond('Ping exitoso');
 })
 
 handler.on('error', function (err) {
