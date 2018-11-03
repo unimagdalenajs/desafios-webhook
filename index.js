@@ -23,10 +23,10 @@ http.createServer(function (req, res) {
 }).listen(port)
 console.log(`Corriendo en puerto ${port}`);
 
-handler.on('*', async function (event) {
+handler.on('ping', async function (event) {
   const { ping_url } = event.payload.hook;
   console.log(event);
-  await fetch(ping_url, headers());
+  await fetch(ping_url, parseBody());
   return response('Ping exitoso');
 })
 
@@ -93,11 +93,15 @@ function respond(payload, statusCode = 200) {
   };
 }
 
-function headers() {
-  return {
+function parseBody(body) {
+  const parsed = {
     method: 'POST',
-    headers: new Headers(),
+    headers: { 'Content-Type': 'application/json' },
     mode: 'cors',
-    cache: 'default'
+    cache: 'default',
   };
+  if (body) {
+    parsed.body = JSON.stringify(body);
+  }
+  return parsed;
 }
