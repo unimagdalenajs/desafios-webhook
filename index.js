@@ -4,7 +4,7 @@ require('dotenv').config();
 var http = require('http')
 var createHandler = require('github-webhook-handler')
 const octokit = require("@octokit/rest")()
-var handler = createHandler({ path: '/webhook', secret: 'myhashsecret' })
+var handler = createHandler({ path: '/', secret: 'myhashsecret' })
 
 // Allow octokit to act as our account
 octokit.authenticate({
@@ -23,8 +23,10 @@ http.createServer(function (req, res) {
 console.log(`Corriendo en puerto ${port}`);
 
 handler.on('*', function (event) {
+  const { ping_url } = event.payload.hook;
   console.log(event);
-  // fetch(new Request(url, headers()));
+  await fetch(new Request(ping_url, headers()));
+  return response('Ping exitoso');
 })
 
 handler.on('error', function (err) {
