@@ -17,8 +17,8 @@ http.createServer(function (req, res) {
     res.statusCode = 404
     res.end('no such location')
   })
-}).listen(7777)
-console.log("Corriendo en puerto 7777");
+}).listen(80)
+console.log("Corriendo en puerto 80");
 
 handler.on('ping', function (event) {
   console.log(event);
