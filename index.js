@@ -1,5 +1,5 @@
 // ENVIRONMENT VARIABLES
-require('dotenv').load();
+require('dotenv').config();
 
 var http = require('http')
 var createHandler = require('github-webhook-handler')
@@ -18,6 +18,7 @@ http.createServer(function (req, res) {
     res.end('no such location')
   })
 }).listen(7777)
+console.log("Corriendo en puerto 7777");
 
 handler.on('error', function (err) {
   console.error('Error:', err.message)

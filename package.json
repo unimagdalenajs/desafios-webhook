@@ -12,6 +12,6 @@
     "github-webhook-handler": "^0.7.1"
   },
   "scripts": {
-    "start": "node index.js"
+    "start": "node -r dotenv/config index.js"
   }
 }
