@@ -12,13 +12,15 @@ octokit.authenticate({
   token: process.env.GITHUB_TOKEN,
 })
 
+const port = process.env.PORT || 3000;
+
 http.createServer(function (req, res) {
   handler(req, res, function (err) {
     res.statusCode = 404
     res.end('no such location')
   })
-}).listen(80)
-console.log("Corriendo en puerto 80");
+}).listen(port)
+console.log(`Corriendo en puerto ${port}`);
 
 handler.on('ping', function (event) {
   console.log(event);
