@@ -1,3 +1,6 @@
+// ENVIRONMENT VARIABLES
+require('dotenv').load();
+
 var http = require('http')
 var createHandler = require('github-webhook-handler')
 const octokit = require("@octokit/rest")()

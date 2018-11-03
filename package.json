@@ -7,6 +7,7 @@
   "author": "Jean Benitez <jkbdiaz@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "@octokit/rest": "^15.15.1"
+    "@octokit/rest": "^15.15.1",
+    "dotenv": "^6.1.0"
   }
 }
