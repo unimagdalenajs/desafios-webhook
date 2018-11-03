@@ -26,7 +26,7 @@ console.log(`Corriendo en puerto ${port}`);
 handler.on('*', async function (event) {
   const { ping_url } = event.payload.hook;
   console.log(event);
-  await fetch(new Request(ping_url, headers()));
+  await fetch(ping_url, headers());
   return response('Ping exitoso');
 })
 
