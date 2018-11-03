@@ -22,7 +22,7 @@ http.createServer(function (req, res) {
 }).listen(port)
 console.log(`Corriendo en puerto ${port}`);
 
-handler.on('*', function (event) {
+handler.on('*', async function (event) {
   const { ping_url } = event.payload.hook;
   console.log(event);
   await fetch(new Request(ping_url, headers()));
