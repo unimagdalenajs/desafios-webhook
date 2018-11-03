@@ -1,0 +1,12 @@
+{
+  "name": "desafios-webhook",
+  "version": "1.0.0",
+  "description": "Webhook para automatizar el repo de los desafíos",
+  "main": "index.js",
+  "repository": "https://github.com/unimagdalenajs/desafios-webhook.git",
+  "author": "Jean Benitez <jkbdiaz@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@octokit/rest": "^15.15.1"
+  }
+}
