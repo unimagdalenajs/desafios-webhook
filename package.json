@@ -9,7 +9,8 @@
   "dependencies": {
     "@octokit/rest": "^15.15.1",
     "dotenv": "^6.1.0",
-    "github-webhook-handler": "^0.7.1"
+    "github-webhook-handler": "^0.7.1",
+    "node-fetch": "^2.2.0"
   },
   "scripts": {
     "start": "node -r dotenv/config index.js"

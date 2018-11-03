@@ -1,10 +1,11 @@
 // ENVIRONMENT VARIABLES
 require('dotenv').config();
 
-var http = require('http')
-var createHandler = require('github-webhook-handler')
+const fetch = require("node-fetch");
+const http = require('http')
+const createHandler = require('github-webhook-handler')
 const octokit = require("@octokit/rest")()
-var handler = createHandler({ path: '/', secret: 'myhashsecret' })
+const handler = createHandler({ path: '/', secret: 'myhashsecret' })
 
 // Allow octokit to act as our account
 octokit.authenticate({
