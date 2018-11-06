@@ -40,7 +40,7 @@ module.exports = function (req, res, errorCallback) {
     const commentBody = payload.comment.body;
     const pull_request = payload.issue.pull_request;
 
-    if (payload.action !== 'created') {
+    if (payload.action !== 'created' || payload.issue.state !== 'open') {
       return voidResponse();
     }
 
@@ -53,6 +53,15 @@ module.exports = function (req, res, errorCallback) {
           console.log(`ISSUES IDS: ${issueIds}`);
 
           await Promise.all([
+            // A comment in fixed issue
+            octokit.issues.createComment({
+              repo: repoName,
+              owner: repoOwner,
+              number: fixed,
+              body: `Genial @${commentAuthor}! Acabas de superar el desafio.
+              Espero hayas aprendido algo valioso y que hayas disfrutado hacer el reto, recuerda que la práctica hace al Maestro.
+              Felicidades!!!`,
+            }),
             // close fixed issue
             octokit.issues.edit({
               repo: repoName,
@@ -68,14 +77,12 @@ module.exports = function (req, res, errorCallback) {
               number: created,
               labels: ["disponible"],
             }),
-            // A comment in the PR
-            octokit.issues.createComment({
+            // A merge
+            octokit.pullRequests.merge({
               repo: repoName,
               owner: repoOwner,
               number: issueNumber,
-              body: `Genial @${commentAuthor}! Acabas de superar el desafio.
-              Espero hayas aprendido algo valioso y que hayas disfrutado hacer el reto, recuerda que la práctica hace al Maestro.
-              Felicidades!!!`,
+              commit_title: `Merge solución de @${commentAuthor} al desafio #${fixed}`,
             }),
           ]);
         }
