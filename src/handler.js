@@ -52,6 +52,11 @@ module.exports = function (req, res, errorCallback) {
           const [fixed, created] = issueIds.map(id => +id.slice(1));
           console.log(`ISSUES IDS: ${issueIds}`);
 
+          // FALTA VALIDAR:
+          // - Que $fixed sea un issue asignado a $commentAuthor
+          // - Que $created en verdad exista
+          // - Que el ultimo build haya sido exitoso
+
           await Promise.all([
             // A comment in fixed issue
             octokit.issues.createComment({
