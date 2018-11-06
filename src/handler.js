@@ -124,12 +124,13 @@ module.exports = function (req, res, errorCallback) {
       });
 
       if (authorActiveIssues.data && +authorActiveIssues.data.total_count > 0) {
-        console.log(authorActiveIssues.data.items[0]);
+        const activeIssue = authorActiveIssues.data.items[0];
+        const id = activeIssue ? ` (#${activeIssue.number})` : '';
         await octokit.issues.createComment({
           repo: repoName,
           owner: repoOwner,
           number: issueNumber,
-          body: `@${commentAuthor}, ya tienes un desafio asignado previamente. Ánimo, resuelvelo y luego si buscas otro reto :D`,
+          body: `@${commentAuthor}, ya tienes un desafio asignado previamente${id}. Ánimo, resuelvelo y luego si buscas otro reto :D`,
         });
   
         return respond("El usuario solicitante ya tiene desafio asignado.");
