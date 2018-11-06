@@ -49,7 +49,7 @@ module.exports = function (req, res, errorCallback) {
       if (commentBody.includes('/merge')) {
         const issueIds = commentBody.match(/#\d+/g) || [];
         if (Array.isArray(issueIds) && issueIds.length === 2) {
-          const [fixed, created] = issueIds;
+          const [fixed, created] = issueIds.map(id => +id.slice(1));
           console.log(`ISSUES IDS: ${issueIds}`);
 
           await Promise.all([
