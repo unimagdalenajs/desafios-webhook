@@ -82,7 +82,7 @@ module.exports = function (req, res, errorCallback) {
               repo: repoName,
               owner: repoOwner,
               number: issueNumber,
-              commit_title: `Merge solución de @${commentAuthor} al desafio #${fixed}`,
+              // commit_title: `Merge solución de @${commentAuthor} al desafio #${fixed}`,
             }),
           ]);
         }
@@ -97,6 +97,7 @@ module.exports = function (req, res, errorCallback) {
   
       // If it's already assigned, inform the user and do nothing.
       const isAssigned = labels.find(({ name }) => name === "asignado");
+      const isAvailable = labels.find(({ name }) => name === "disponible");
       if (isAssigned) {
         await octokit.issues.createComment({
           repo: repoName,
@@ -106,6 +107,16 @@ module.exports = function (req, res, errorCallback) {
         });
   
         return respond("El desafio ya tiene a alguien asignado.");
+      }
+      if (!isAvailable) {
+        await octokit.issues.createComment({
+          repo: repoName,
+          owner: repoOwner,
+          number: issueNumber,
+          body: `@${commentAuthor}, este desafío no está disponible aún. Fíjate en que el desafio que vayas a tomar tenga el label **disponible**.`,
+        });
+  
+        return respond("El desafio no está disponible.");
       }
   
       // Else apply new labels and inform the user
