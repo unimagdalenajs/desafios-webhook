@@ -99,13 +99,12 @@ module.exports = function (req, res, errorCallback) {
       const isAssigned = labels.find(({ name }) => name === "asignado");
       const isAvailable = labels.find(({ name }) => name === "disponible");
       if (isAssigned) {
-        console.log(isAssigned.name.split(":"), commentAuthor);
-        const assignedToYou = isAssigned.name.split(":")[1] === commentAuthor;
+        const isAssignedToYou = labels.find(({ name }) => name.includes(commentAuthor));
         await octokit.issues.createComment({
           repo: repoName,
           owner: repoOwner,
           number: issueNumber,
-          body: assignedToYou
+          body: isAssignedToYou
             ? `El desafio ya está asignado a ti. Ya puedes empezar a resolverlo!`
             : `Lo siento @${commentAuthor}, este desafío está asignado a alguien mas.`,
         });
