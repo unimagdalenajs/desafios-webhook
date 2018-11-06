@@ -105,7 +105,7 @@ module.exports = function (req, res, errorCallback) {
           owner: repoOwner,
           number: issueNumber,
           body: isAssignedToYou
-            ? `El desafio ya está asignado a ti. Ya puedes empezar a resolverlo!`
+            ? `El desafio ya habia sido asignado a ti anteriormente. Ya deberias estar resolviéndolo! Animo!`
             : `Lo siento @${commentAuthor}, este desafío está asignado a alguien mas.`,
         });
   
