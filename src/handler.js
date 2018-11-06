@@ -3,6 +3,8 @@ const createHandler = require('github-webhook-handler');
 const fetch = require("node-fetch");
 const octokit = require("@octokit/rest")();
 
+const voidResponse = _ => respond("No hay nada que hacer aqui.");
+
 // Allow octokit to act as our account
 octokit.authenticate({
   type: "token",
@@ -38,11 +40,17 @@ module.exports = function (req, res, errorCallback) {
     const commentBody = payload.comment.body;
     const pull_request = payload.issue.pull_request;
 
+    if (payload.action !== 'created') {
+      return voidResponse();
+    }
+
     if (pull_request) {
+      // ====== PR COMMENT ===== //
       if (commentBody.includes('/merge')) {
         const issueIds = commentBody.match(/#\d+/g) || [];
         if (Array.isArray(issueIds) && issueIds.length === 2) {
           const [fixed, created] = issueIds;
+          console.log(`ISSUES IDS: ${issueIds}`);
 
           await Promise.all([
             // close fixed issue
@@ -72,42 +80,43 @@ module.exports = function (req, res, errorCallback) {
           ]);
         }
       }
-      return respond("No hay nada que hacer aqui.");
+    } else {
+      // ====== ISSUE COMMENT ===== //
+
+      // If it's not a /request comment
+      if (!commentBody.includes('/request')) {
+        return voidResponse();
+      }
+  
+      // If it's already assigned, inform the user and do nothing.
+      const isAssigned = labels.find(({ name }) => name === "asignado");
+      if (isAssigned) {
+        await octokit.issues.createComment({
+          repo: repoName,
+          owner: repoOwner,
+          number: issueNumber,
+          body: `Lo siento @${commentAuthor}, este desafío está asignado a alguien mas.`,
+        });
+  
+        return respond("El desafio ya tiene a alguien asignado.");
+      }
+  
+      // Else apply new labels and inform the user
+      await Promise.all([
+        octokit.issues.replaceAllLabels({
+          repo: repoName,
+          owner: repoOwner,
+          number: issueNumber,
+          labels: ["asignado", `asignado:${commentAuthor}`],
+        }),
+        octokit.issues.createComment({
+          repo: repoName,
+          owner: repoOwner,
+          number: issueNumber,
+          body: `Hey @${commentAuthor}, el desafio es todo tuyo.`,
+        }),
+      ]);
     }
-
-    // If it's not a /request comment
-    if (!commentBody.includes('/request')) {
-      return respond("No hay nada que hacer aqui.");
-    }
-
-    // If it's already assigned, inform the user and do nothing.
-    const isAssigned = labels.find(({ name }) => name === "asignado");
-    if (isAssigned) {
-      await octokit.issues.createComment({
-        repo: repoName,
-        owner: repoOwner,
-        number: issueNumber,
-        body: `Lo siento @${commentAuthor}, este desafío está asignado a alguien mas.`,
-      });
-
-      return respond("El desafio ya tiene a alguien asignado.");
-    }
-
-    // Else apply new labels and inform the user
-    await Promise.all([
-      octokit.issues.replaceAllLabels({
-        repo: repoName,
-        owner: repoOwner,
-        number: issueNumber,
-        labels: ["asignado", `asignado:${commentAuthor}`],
-      }),
-      octokit.issues.createComment({
-        repo: repoName,
-        owner: repoOwner,
-        number: issueNumber,
-        body: `Hey @${commentAuthor}, el desafio es todo tuyo.`,
-      }),
-    ]);
   });
 
   handler(req, res, errorCallback);
