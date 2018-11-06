@@ -123,7 +123,17 @@ module.exports = function (req, res, errorCallback) {
         q: `type:issue is:open label:asignado:${commentAuthor} `,
       });
 
-      console.log(authorActiveIssues);
+      if (authorActiveIssues.data && +authorActiveIssues.data.total_count > 0) {
+        console.log(authorActiveIssues.data.items[0]);
+        await octokit.issues.createComment({
+          repo: repoName,
+          owner: repoOwner,
+          number: issueNumber,
+          body: `@${commentAuthor}, ya tienes un desafio asignado previamente. Ánimo, resuelvelo y luego si buscas otro reto :D`,
+        });
+  
+        return respond("El usuario solicitante ya tiene desafio asignado.");
+      }
   
       // Else apply new labels and inform the user
       await Promise.all([
