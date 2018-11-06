@@ -99,6 +99,7 @@ module.exports = function (req, res, errorCallback) {
       const isAssigned = labels.find(({ name }) => name === "asignado");
       const isAvailable = labels.find(({ name }) => name === "disponible");
       if (isAssigned) {
+        console.log(isAssigned.name.split(":"), commentAuthor);
         const assignedToYou = isAssigned.name.split(":")[1] === commentAuthor;
         await octokit.issues.createComment({
           repo: repoName,
