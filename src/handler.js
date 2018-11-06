@@ -16,9 +16,9 @@ module.exports = function (req, res, errorCallback) {
     console.error('Error:', err.message);
   });
 
-  handler.on('*', function (event) {
-    console.log('EVENT PAYLOAD:', event.payload);
-  });
+  // handler.on('*', function (event) {
+  //   console.log('EVENT PAYLOAD:', event.payload);
+  // });
 
   handler.on('ping', async function (event) {
     const { ping_url } = event.payload.hook;
@@ -39,7 +39,7 @@ module.exports = function (req, res, errorCallback) {
     const pull_request = payload.issue.pull_request;
 
     if (pull_request) {
-      if (ommentBody.includes('/merge')) {
+      if (commentBody.includes('/merge')) {
         const issueIds = commentBody.match(/#\d+/g) || [];
         if (Array.isArray(issueIds) && issueIds.length === 2) {
           const [fixed, created] = issueIds;
