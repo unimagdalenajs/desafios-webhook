@@ -118,6 +118,12 @@ module.exports = function (req, res, errorCallback) {
   
         return respond("El desafio no está disponible.");
       }
+
+      const authorActiveIssues = await octokit.search.issues({
+        q: `type:issue is:open label:asignado:${commentAuthor} `,
+      });
+
+      console.log(authorActiveIssues);
   
       // Else apply new labels and inform the user
       await Promise.all([
