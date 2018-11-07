@@ -72,8 +72,7 @@ module.exports = function (req, res, errorCallback) {
               repo: repoName,
               owner: repoOwner,
               number: fixed,
-              state: 'closed',
-              labels: [],
+              state: 'closed'
             }),
             // make created issue as available
             octokit.issues.replaceAllLabels({
